@@ -1,0 +1,18 @@
+---
+export interface Props { title?: string; description?: string }
+const { title = '', description = '' } = Astro.props as Props
+---
+
+<section class="section">
+	{title && <h2>{title}</h2>}
+	{description && <p class="description">{description}</p>}
+	<div class="content"><slot /></div>
+</section>
+
+<style>
+	.section { padding: 40px 0; }
+	h2 { margin: 0 0 12px; font-size: 24px; }
+	.description { margin: 0 0 18px; color: var(--muted); max-width: 70ch; }
+	.content { display: grid; gap: 16px; }
+</style>
+

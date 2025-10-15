@@ -1,0 +1,75 @@
+---
+export interface Props {
+	title: string
+	subtitle?: string
+	ctaText?: string
+	ctaHref?: string
+}
+const { title, subtitle = '', ctaText = '', ctaHref = '#' } = Astro.props as Props
+---
+
+<section class="hero">
+	<div class="content">
+		<h1>{title}</h1>
+		{subtitle && <p class="subtitle">{subtitle}</p>}
+		{ctaText && <a class="cta" href={ctaHref}>{ctaText}</a>}
+	</div>
+	<div class="glow" />
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		padding: 72px 0 32px;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		align-items: start;
+	}
+
+	h1 {
+		font-size: 42px;
+		line-height: 1.1;
+		margin: 0;
+	}
+
+	.subtitle {
+		color: var(--muted);
+		max-width: 60ch;
+		margin: 0;
+		font-size: 18px;
+	}
+
+	.cta {
+		margin-top: 6px;
+		display: inline-flex;
+		align-items: center;
+		padding: 10px 14px;
+		background: var(--primary);
+		color: var(--primary-contrast);
+		border-radius: 10px;
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+	.glow {
+		position: absolute;
+		right: -10%;
+		top: -30%;
+		width: 420px;
+		height: 420px;
+		background: radial-gradient(600px 200px at 50% 50%, rgba(124, 92, 255, 0.25), transparent 50%);
+		pointer-events: none;
+		filter: blur(50px);
+	}
+
+	@media (max-width: 640px) {
+		h1 { font-size: 34px; }
+		.subtitle { font-size: 16px; }
+	}
+</style>
+

@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import Section from '../components/Section.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+---
+
+<Layout>
+	<Hero title="Projects" subtitle="A selection of work with placeholder details." />
+	<Section>
+		<div class="grid">
+			<ProjectCard title="Portfolio Site" description="Clean, fast, and accessible site." tech={["Astro", "CSS"]} link="#" />
+			<ProjectCard title="Design System" description="Reusable UI components and tokens." tech={["TypeScript", "Figma"]} link="#" />
+			<ProjectCard title="API Service" description="Scalable backend for data processing." tech={["Node", "Postgres"]} link="#" />
+		</div>
+	</Section>
+</Layout>
+
+<style>
+	.grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+	@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+	@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+</style>
+

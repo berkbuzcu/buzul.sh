@@ -1,0 +1,38 @@
+---
+export interface Props {
+	github?: string
+	linkedin?: string
+	x?: string
+	email?: string
+}
+const { github = '#', linkedin = '#', x = '#', email = '' } = Astro.props as Props
+---
+
+<div class="socials">
+	{github && (
+		<a aria-label="GitHub" href={github} rel="noopener" target="_blank">GitHub</a>
+	)}
+	{linkedin && (
+		<a aria-label="LinkedIn" href={linkedin} rel="noopener" target="_blank">LinkedIn</a>
+	)}
+	{x && (
+		<a aria-label="X" href={x} rel="noopener" target="_blank">X</a>
+	)}
+	{email && (
+		<a aria-label="Email" href={`mailto:${email}`}>Email</a>
+	)}
+</div>
+
+<style>
+	.socials { display: flex; gap: 12px; }
+	.socials a {
+		color: var(--muted);
+		text-decoration: none;
+		padding: 8px 10px;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		transition: color .2s ease, border-color .2s ease;
+	}
+	.socials a:hover { color: var(--text); border-color: rgba(255,255,255,0.18); }
+</style>
+

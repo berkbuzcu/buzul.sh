@@ -1,0 +1,49 @@
+---
+export interface Props {
+	title: string
+	description: string
+	tech?: string[]
+	link?: string
+}
+const { title, description, tech = [], link = '#' } = Astro.props as Props
+---
+
+<article class="card">
+	<div class="body">
+		<h3>{title}</h3>
+		<p class="desc">{description}</p>
+		{tech.length > 0 && (
+			<ul class="tech">
+				{tech.map((t) => <li>{t}</li>)}
+			</ul>
+		)}
+	</div>
+	<a class="visit" href={link} target="_blank" rel="noopener">View</a>
+</article>
+
+<style>
+	.card {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 16px;
+		padding: 16px;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		background: var(--surface);
+	}
+
+	h3 { margin: 0 0 6px; font-size: 18px; }
+	.desc { margin: 0; color: var(--muted); }
+	.tech { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+	.tech li {
+		padding: 4px 8px;
+		border-radius: 6px;
+		background: rgba(124,92,255,0.1);
+		border: 1px solid var(--border);
+		font-size: 12px;
+		color: var(--text);
+	}
+
+	.visit { align-self: start; text-decoration: none; color: var(--primary-contrast); background: var(--primary); padding: 8px 10px; border-radius: 8px; font-weight: 600; }
+</style>
+

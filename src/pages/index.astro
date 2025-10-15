@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import Section from '../components/Section.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+import BlogCard from '../components/BlogCard.astro'
+import SocialIcons from '../components/SocialIcons.astro'
+---
+
+<Layout>
+	<Hero
+		title="A Scientist Wannabe"
+		subtitle="I'm Berk Buzcu. I feel like a scientist of some. This site is a work-in-progress with placeholder content."
+		ctaText="Get in touch"
+		ctaHref="/contact"
+	/>
+
+	<Section title="Featured Projects" description="A few recent things with placeholder details.">
+		<div class="grid">
+			<ProjectCard title="Project One" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit." tech={["Astro", "TypeScript"]} link="#" />
+			<ProjectCard title="Project Two" description="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." tech={["React", "Node.js"]} link="#" />
+			<ProjectCard title="Project Three" description="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." tech={["CSS", "UI"]} link="#" />
+		</div>
+	</Section>
+
+	<Section title="Latest Writing" description="Short previews from placeholder posts.">
+		<div class="grid">
+			<BlogCard title="Hello World" excerpt="Lorem ipsum dolor sit amet, consectetur adipiscing elit." date="2024-07-01" url="/blog/hello-world" />
+			<BlogCard title="Thoughts on Design" excerpt="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." date="2024-08-15" url="/blog/thoughts-on-design" />
+			<BlogCard title="Engineering Notes" excerpt="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." date="2024-09-10" url="/blog/engineering-notes" />
+		</div>
+	</Section>
+
+	<Section title="Elsewhere">
+		<SocialIcons github="https://github.com/berkbuzcu" linkedin="https://linkedin.com/in/" x="https://x.com/" email="hi@example.com" />
+	</Section>
+</Layout>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 16px;
+	}
+
+	@media (max-width: 900px) {
+		.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	}
+
+	@media (max-width: 600px) {
+		.grid { grid-template-columns: 1fr; }
+	}
+</style>

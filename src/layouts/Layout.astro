@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Berk Buzcu</title>
+		<slot name="head" />
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="container header-inner">
+				<a class="brand" href="/">Berk Buzcu</a>
+				<nav class="nav">
+					<a href="/about">About</a>
+					<a href="/projects">Projects</a>
+					<a href="/blog">Blog</a>
+					<a class="button" href="/contact">Contact</a>
+				</nav>
+			</div>
+		</header>
+		<main class="site-main container">
+			<slot />
+		</main>
+		<footer class="site-footer">
+			<div class="container footer-inner">
+				<p>© {new Date().getFullYear()} Berk Buzcu</p>
+			</div>
+		</footer>
+	</body>
+</html>
+
+<style>
+	:root {
+		--bg: #0b0c10;
+		--surface: #111217;
+		--text: #e5e7eb;
+		--muted: #9aa1ac;
+		--primary: #7c5cff;
+		--primary-contrast: #ffffff;
+		--border: #22232b;
+	}
+
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+		background: var(--bg);
+		color: var(--text);
+		font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+	}
+
+	.container {
+		max-width: 1100px;
+		padding: 0 20px;
+		margin: 0 auto;
+	}
+
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 20;
+		background: rgba(11, 12, 16, 0.7);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 64px;
+	}
+
+	.brand {
+		color: var(--text);
+		text-decoration: none;
+		font-weight: 700;
+		font-size: 18px;
+		letter-spacing: 0.2px;
+	}
+
+	.nav {
+		display: flex;
+		gap: 18px;
+		align-items: center;
+	}
+
+	.nav a {
+		color: var(--muted);
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.2s ease;
+	}
+
+	.nav a:hover {
+		color: var(--text);
+	}
+
+	.nav .button {
+		padding: 10px 14px;
+		background: var(--primary);
+		color: var(--primary-contrast);
+		border-radius: 10px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.site-main {
+		padding: 48px 0 80px;
+	}
+
+	.site-footer {
+		border-top: 1px solid var(--border);
+		background: var(--surface);
+	}
+
+	.footer-inner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 72px;
+	}
+
+	p {
+		color: var(--muted);
+		margin: 0;
+	}
+
+	@media (max-width: 640px) {
+		.nav {
+			gap: 12px;
+		}
+		.nav a {
+			font-size: 14px;
+		}
+	}
+</style>

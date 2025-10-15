@@ -1,0 +1,24 @@
+---
+export interface Props {
+	title: string
+	excerpt: string
+	date: string
+	url: string
+}
+const { title, excerpt, date, url } = Astro.props as Props
+---
+
+<a class="post" href={url}>
+	<h3>{title}</h3>
+	<p class="excerpt">{excerpt}</p>
+	<p class="meta">{new Date(date).toLocaleDateString()}</p>
+</a>
+
+<style>
+	.post { display: block; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); text-decoration: none; }
+	h3 { margin: 0 0 6px; font-size: 18px; color: var(--text); }
+	.excerpt { margin: 0 0 10px; color: var(--muted); }
+	.meta { margin: 0; color: var(--muted); font-size: 13px; }
+	.post:hover { border-color: rgba(255,255,255,0.18); }
+</style>
+
