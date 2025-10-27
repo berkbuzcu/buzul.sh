@@ -6,8 +6,10 @@ import ProjectCard from '../components/ProjectCard.astro'
 import BlogCard from '../components/BlogCard.astro'
 import SocialIcons from '../components/SocialIcons.astro'
 import { samplePapers } from '../data/papers'
+import { sampleProjects } from '../data/projects'
 
 const latestPapers = [...samplePapers].sort((a, b) => b.year - a.year).slice(0, 3)
+const featuredProjects = [...sampleProjects].sort((a, b) => b.year - a.year).slice(0, 3)
 ---
 
 <Layout>
@@ -18,19 +20,11 @@ const latestPapers = [...samplePapers].sort((a, b) => b.year - a.year).slice(0, 
 		ctaHref="/contact"
 	/>
 
-	<Section title="Featured Projects" description="A few recent things with placeholder details.">
+	<Section title="Featured Projects" description="A few recent things.">
 		<div class="grid">
-			<ProjectCard title="Project One" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit." tech={["Astro", "TypeScript"]} link="#" />
-			<ProjectCard title="Project Two" description="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." tech={["React", "Node.js"]} link="#" />
-			<ProjectCard title="Project Three" description="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." tech={["CSS", "UI"]} link="#" />
-		</div>
-	</Section>
-
-	<Section title="Latest Writing" description="Short previews from placeholder posts.">
-		<div class="grid">
-			<BlogCard title="Hello World" excerpt="Lorem ipsum dolor sit amet, consectetur adipiscing elit." date="2024-07-01" url="/blog/hello-world" />
-			<BlogCard title="Thoughts on Design" excerpt="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." date="2024-08-15" url="/blog/thoughts-on-design" />
-			<BlogCard title="Engineering Notes" excerpt="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." date="2024-09-10" url="/blog/engineering-notes" />
+			{featuredProjects.map((p) => (
+				<ProjectCard title={p.title} description={p.description} year={p.year} image={p.image} tech={p.tech} link={p.link} />
+			))}
 		</div>
 	</Section>
 
@@ -52,6 +46,14 @@ const latestPapers = [...samplePapers].sort((a, b) => b.year - a.year).slice(0, 
 			))}
 		</ul>
 		<p><a href="/papers">View all papers →</a></p>
+	</Section>
+
+	<Section title="Latest Writing" description="Short previews from placeholder posts.">
+		<div class="grid">
+			<BlogCard title="Hello World" excerpt="Lorem ipsum dolor sit amet, consectetur adipiscing elit." date="2024-07-01" url="/blog/hello-world" />
+			<BlogCard title="Thoughts on Design" excerpt="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." date="2024-08-15" url="/blog/thoughts-on-design" />
+			<BlogCard title="Engineering Notes" excerpt="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." date="2024-09-10" url="/blog/engineering-notes" />
+		</div>
 	</Section>
 
 	<Section title="Elsewhere">
