@@ -3,15 +3,16 @@ import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
 import Section from '../components/Section.astro'
 import ProjectCard from '../components/ProjectCard.astro'
+import { sampleProjects } from '../data/projects'
 ---
 
 <Layout>
 	<Hero title="Projects" subtitle="A selection of work with placeholder details." />
 	<Section>
 		<div class="grid">
-			<ProjectCard title="Portfolio Site" description="Clean, fast, and accessible site." tech={["Astro", "CSS"]} link="#" />
-			<ProjectCard title="Design System" description="Reusable UI components and tokens." tech={["TypeScript", "Figma"]} link="#" />
-			<ProjectCard title="API Service" description="Scalable backend for data processing." tech={["Node", "Postgres"]} link="#" />
+			{sampleProjects.map((p) => (
+				<ProjectCard title={p.title} description={p.description} tech={p.tech} link={p.link} />
+			))}
 		</div>
 	</Section>
 </Layout>

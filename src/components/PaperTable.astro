@@ -15,6 +15,7 @@ const { papers } = Astro.props as Props
 				<th><button type="button" class="sort-btn" data-key="year">Year <span class="arrow"></span></button></th>
 				<th><button type="button" class="sort-btn" data-key="type">Type <span class="arrow"></span></button></th>
 				<th><button type="button" class="sort-btn" data-key="venue">Venue <span class="arrow"></span></button></th>
+				<th>Keywords</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -23,7 +24,7 @@ const { papers } = Astro.props as Props
 				const v = (p.venue ?? '').toLowerCase()
 				const type = v.includes('workshop') ? 'W' : (v.includes('conference') || v.includes('proceedings')) ? 'C' : (v.includes('journal') || v.includes('magazine') || v.includes('intelligence') || v.includes('systems') || v.includes('reports')) ? 'J' : '—'
 				return (
-					<tr data-title={p.title} data-authors={p.authors.join(' ')} data-year={p.year} data-venue={p.venue ?? ''} data-type={type}>
+					<tr data-title={p.title} data-authors={p.authors.join(' ')} data-year={p.year} data-venue={p.venue ?? ''} data-type={type} data-keywords={(p.keywords ?? []).join(' ')}>
 						<td class="title">
 							<div class="paper-title">{p.doi ? <a href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener">{p.title}</a> : p.title}</div>
 							<div class="paper-authors">
@@ -35,6 +36,13 @@ const { papers } = Astro.props as Props
 						<td>{p.year}</td>
 						<td class="type"><span class="type-badge">{type}</span></td>
 						<td>{p.venue ?? '—'}</td>
+						<td>
+							{p.keywords && p.keywords.length > 0 ? (
+								<ul class="kw">
+									{p.keywords.map((k) => <li>{k}</li>)}
+								</ul>
+							) : '—'}
+						</td>
 						<td class="actions">
 							{p.file && <a class="btn" href={p.file} download aria-label="Download">⬇️</a>}
 							{p.doi && <a class="btn ghost" href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener" aria-label="Open DOI">🔗</a>}
@@ -64,6 +72,8 @@ const { papers } = Astro.props as Props
 	.actions { white-space: nowrap; display: flex; gap: 8px; }
 	.btn { display: inline-flex; align-items: center; padding: 6px 10px; border-radius: 8px; text-decoration: none; background: var(--primary); color: var(--primary-contrast); font-weight: 600; border: 1px solid rgba(255,255,255,.1); }
 	.btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+	.kw { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+	.kw li { padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; }
 </style>
 
 <script>
@@ -85,7 +95,8 @@ const { papers } = Astro.props as Props
 				const authors = row.dataset.authors?.toLowerCase() || ''
 				const venue = row.dataset.venue?.toLowerCase() || ''
 				const year = row.dataset.year || ''
-				return !q || title.includes(q) || authors.includes(q) || venue.includes(q) || year.includes(q)
+				const keywords = row.dataset.keywords?.toLowerCase() || ''
+				return !q || title.includes(q) || authors.includes(q) || venue.includes(q) || year.includes(q) || keywords.includes(q)
 			})
 
 			const sorted = filtered.sort((a, b) => {

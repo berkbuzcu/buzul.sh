@@ -5,6 +5,9 @@ import Section from '../components/Section.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import BlogCard from '../components/BlogCard.astro'
 import SocialIcons from '../components/SocialIcons.astro'
+import { samplePapers } from '../data/papers'
+
+const latestPapers = [...samplePapers].sort((a, b) => b.year - a.year).slice(0, 3)
 ---
 
 <Layout>
@@ -31,6 +34,26 @@ import SocialIcons from '../components/SocialIcons.astro'
 		</div>
 	</Section>
 
+	<Section title="Latest Papers" description="Most recent publications.">
+		<ul class="paper-list">
+			{latestPapers.map((p) => (
+				<li class="paper-item">
+					<div class="paper-head">
+						{p.doi ? <a href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener">{p.title}</a> : p.title}
+						<span class="year">{p.year}</span>
+					</div>
+					<div class="paper-meta">{p.venue ?? '—'}</div>
+					{p.keywords && p.keywords.length > 0 && (
+						<ul class="keywords">
+							{p.keywords.map((k) => <li>{k}</li>)}
+						</ul>
+					)}
+				</li>
+			))}
+		</ul>
+		<p><a href="/papers">View all papers →</a></p>
+	</Section>
+
 	<Section title="Elsewhere">
 		<SocialIcons github="https://github.com/berkbuzcu" linkedin="https://linkedin.com/in/" x="https://x.com/" email="hi@example.com" />
 	</Section>
@@ -50,4 +73,13 @@ import SocialIcons from '../components/SocialIcons.astro'
 	@media (max-width: 600px) {
 		.grid { grid-template-columns: 1fr; }
 	}
+
+	.paper-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+	.paper-item { border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: var(--surface); }
+	.paper-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-weight: 700; }
+	.paper-head a { color: var(--text); text-decoration: none; }
+	.paper-meta { color: var(--muted); font-size: .95em; margin-top: 4px; }
+	.year { color: var(--muted); font-weight: 600; }
+	.keywords { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; padding: 0; list-style: none; }
+	.keywords li { padding: 3px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; }
 </style>
