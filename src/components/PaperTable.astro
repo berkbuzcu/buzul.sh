@@ -1,0 +1,136 @@
+---
+import type { Paper } from '../data/papers'
+export interface Props { papers: Paper[] }
+const { papers } = Astro.props as Props
+---
+
+<div class="table-wrap">
+<div class="controls">
+	<input id="filter-input" type="text" placeholder="Filter papers" />
+</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th><button type="button" class="sort-btn" data-key="title">Title <span class="arrow"></span></button></th>
+				<th><button type="button" class="sort-btn" data-key="year">Year <span class="arrow"></span></button></th>
+				<th><button type="button" class="sort-btn" data-key="type">Type <span class="arrow"></span></button></th>
+				<th><button type="button" class="sort-btn" data-key="venue">Venue <span class="arrow"></span></button></th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{papers.map((p) => {
+				const v = (p.venue ?? '').toLowerCase()
+				const type = v.includes('workshop') ? 'W' : (v.includes('conference') || v.includes('proceedings')) ? 'C' : (v.includes('journal') || v.includes('magazine') || v.includes('intelligence') || v.includes('systems') || v.includes('reports')) ? 'J' : '—'
+				return (
+					<tr data-title={p.title} data-authors={p.authors.join(' ')} data-year={p.year} data-venue={p.venue ?? ''} data-type={type}>
+						<td class="title">
+							<div class="paper-title">{p.doi ? <a href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener">{p.title}</a> : p.title}</div>
+							<div class="paper-authors">
+								{p.authors.map((a, i) => (
+									<span>{a === 'B Buzcu' ? <strong>{a}</strong> : a}{i < p.authors.length - 1 ? ', ' : ''}</span>
+								))}
+							</div>
+						</td>
+						<td>{p.year}</td>
+						<td class="type"><span class="type-badge">{type}</span></td>
+						<td>{p.venue ?? '—'}</td>
+						<td class="actions">
+							{p.file && <a class="btn" href={p.file} download aria-label="Download">⬇️</a>}
+							{p.doi && <a class="btn ghost" href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener" aria-label="Open DOI">🔗</a>}
+						</td>
+					</tr>
+				)
+			})}
+		</tbody>
+	</table>
+</div>
+
+<style>
+	.controls { display: flex; gap: 8px; margin-bottom: 12px; }
+	.controls input, .controls select { padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); }
+	.table-wrap { overflow-x: auto; }
+	.table { width: 100%; border-collapse: collapse; min-width: 720px; }
+	th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border); }
+	thead th { color: var(--muted); font-weight: 600; font-size: 14px; }
+	.sort-btn { all: unset; cursor: pointer; color: var(--muted); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+	.sort-btn .arrow { width: 10px; display: inline-block; color: var(--muted); }
+	.sort-btn.active .arrow { color: var(--text); }
+	.title a { color: var(--text); text-decoration: none; }
+	.paper-title { font-weight: 700; line-height: 1.2; }
+	.paper-authors { margin-top: 4px; font-size: 0.9em; color: var(--muted); font-style: italic; }
+	.type { text-align: center; }
+	.type-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); background: transparent; font-weight: 700; font-size: 12px; color: var(--text); }
+	.actions { white-space: nowrap; display: flex; gap: 8px; }
+	.btn { display: inline-flex; align-items: center; padding: 6px 10px; border-radius: 8px; text-decoration: none; background: var(--primary); color: var(--primary-contrast); font-weight: 600; border: 1px solid rgba(255,255,255,.1); }
+	.btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+</style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const input = document.getElementById('filter-input')
+		const tbody = document.querySelector('.table tbody')
+		if (!(input instanceof HTMLInputElement)) return
+		if (!(tbody instanceof HTMLTableSectionElement)) return
+		const inputEl = /** @type {HTMLInputElement} */ (input)
+		const tbodyEl = /** @type {HTMLTableSectionElement} */ (tbody)
+		const rows = Array.from(tbodyEl.querySelectorAll('tr'))
+		let currentKey = 'year'
+		let currentDir = 'desc'
+
+		function apply() {
+			const q = inputEl.value.trim().toLowerCase()
+			const filtered = rows.filter((row) => {
+				const title = row.dataset.title?.toLowerCase() || ''
+				const authors = row.dataset.authors?.toLowerCase() || ''
+				const venue = row.dataset.venue?.toLowerCase() || ''
+				const year = row.dataset.year || ''
+				return !q || title.includes(q) || authors.includes(q) || venue.includes(q) || year.includes(q)
+			})
+
+			const sorted = filtered.sort((a, b) => {
+				const ak = a.dataset[currentKey] || ''
+				const bk = b.dataset[currentKey] || ''
+				if (currentKey === 'year') {
+					const an = Number(ak || 0)
+					const bn = Number(bk || 0)
+					return currentDir === 'asc' ? an - bn : bn - an
+				}
+				const cmp = String(ak).localeCompare(String(bk))
+				return currentDir === 'asc' ? cmp : -cmp
+			})
+
+			tbodyEl.innerHTML = ''
+			for (const row of sorted) tbodyEl.appendChild(row)
+		}
+
+		inputEl.addEventListener('input', apply)
+
+		const headerButtons = Array.from(document.querySelectorAll('.sort-btn'))
+		function updateHeaderState() {
+			for (const btn of headerButtons) {
+				const key = btn.getAttribute('data-key')
+				btn.classList.toggle('active', key === currentKey)
+				const arrow = btn.querySelector('.arrow')
+				if (arrow) arrow.textContent = key === currentKey ? (currentDir === 'asc' ? '↑' : '↓') : ''
+			}
+		}
+		for (const btn of headerButtons) {
+			btn.addEventListener('click', () => {
+				const key = btn.getAttribute('data-key') || 'year'
+				if (currentKey === key) {
+					currentDir = currentDir === 'asc' ? 'desc' : 'asc'
+				} else {
+					currentKey = key
+					currentDir = key === 'year' ? 'desc' : 'asc'
+				}
+				updateHeaderState()
+				apply()
+			})
+		}
+		updateHeaderState()
+		apply()
+	})
+</script>
+
+

@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import Section from '../components/Section.astro'
+import PaperTable from '../components/PaperTable.astro'
+import { samplePapers } from '../data/papers'
+---
+
+<Layout>
+	<Hero title="Papers" subtitle="Uploaded publications with metadata and downloads." />
+	<Section>
+		<PaperTable papers={samplePapers} />
+	</Section>
+</Layout>
+
+
