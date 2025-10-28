@@ -34,13 +34,15 @@
 
 <style>
 	:root {
-		--bg: #0b0c10;
-		--surface: #111217;
-		--text: #e5e7eb;
-		--muted: #9aa1ac;
-		--primary: #7c5cff;
+		--bg: #F8FAFC;
+		--surface: #ffffff;
+		--text: #0F172A;
+		--muted: #64748B; /* slightly darker than requested muted gray for legibility */
+		--muted-weak: #CBD5E1; /* requested muted gray */
+		--primary: #3B82F6; /* blue */
+		--accent: #F59E0B; /* amber */
 		--primary-contrast: #ffffff;
-		--border: #22232b;
+		--border: #E2E8F0;
 	}
 
 	html,
@@ -63,7 +65,7 @@
 		position: sticky;
 		top: 0;
 		z-index: 20;
-		background: rgba(11, 12, 16, 0.7);
+		background: rgba(248, 250, 252, 0.8);
 		backdrop-filter: blur(10px);
 		border-bottom: 1px solid var(--border);
 	}
